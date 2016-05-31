@@ -7,12 +7,12 @@ void meau()
 {
 	printf("$$$$$$$$$$$$$$   SEQLIST  $$$$$$$$$$$$\n");
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-	printf("$$$  1.init       2.push_back      $$$\n");
+	printf("$$$  1.init       2.push_back           $$$\n");
 	printf("$$$  3.pop_back   4.push_front     $$$\n");
-	printf("$$$  5.pop_front  6.insert         $$$\n");
-	printf("$$$  7.remove     8.removeall      $$$\n");
-	printf("$$$  9.sort       10.binary_search $$$\n");
-	printf("$$$  11.print     12.EXIT          $$$\n");
+	printf("$$$  5.pop_front  6.insert             $$$\n");
+	printf("$$$  7.remove     8.removeall       $$$\n");
+	printf("$$$  9.sort       10.binary_search  $$$\n");
+	printf("$$$  11.print     0.EXIT                $$$\n");
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 
 }
