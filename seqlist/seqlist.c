@@ -62,7 +62,7 @@ void PushFront(pSeqlist pSeq, datatype x)
 		return;
 	}
 
-	for (int i = pSeq->sz; i >=; i--)
+	for (int i = pSeq->sz; i >=0; i--)
 	{
 		pSeq->data[i + 1] = pSeq->data[i];
 	}
