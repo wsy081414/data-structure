@@ -91,7 +91,7 @@ void Insert(pSeqlist pSeq, int pos, datatype x)
 		printf("顺序表已经满了。\n");
 		return;
 	}
-	for (int i = pos; i < pSeq->sz; i++)
+		for (int i = pSeq->sz; i >=pos; i--)
 	{
 		pSeq->data[i + 1] = pSeq->data[i];
 	}
