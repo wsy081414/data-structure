@@ -7,12 +7,13 @@ void meau()
 {
 	printf("$$$$$$$$$$$$$$   SEQLIST  $$$$$$$$$$$$\n");
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-	printf("$$$  1.init       2.push_back           $$$\n");
+	printf("$$$  1.init       2.push_back      $$$\n");
 	printf("$$$  3.pop_back   4.push_front     $$$\n");
-	printf("$$$  5.pop_front  6.insert             $$$\n");
-	printf("$$$  7.remove     8.removeall       $$$\n");
-	printf("$$$  9.sort       10.binary_search  $$$\n");
-	printf("$$$  11.print     0.EXIT                $$$\n");
+	printf("$$$  5.pop_front  6.insert         $$$\n");
+	printf("$$$  7.remove     8.removeall      $$$\n");
+	printf("$$$  9.sort       10.binary_search $$$\n");
+	printf("$$$  11.print     12.find          $$$\n");
+	printf("$$$               13.EXIT          $$$\n");
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 
 }
@@ -62,7 +63,7 @@ void PushFront(pSeqlist pSeq, datatype x)
 		return;
 	}
 
-	for (int i = pSeq->sz; i >=0; i--)
+	for (int i = pSeq->sz; i >= 0; i--)
 	{
 		pSeq->data[i + 1] = pSeq->data[i];
 	}
@@ -91,7 +92,7 @@ void Insert(pSeqlist pSeq, int pos, datatype x)
 		printf("顺序表已经满了。\n");
 		return;
 	}
-		for (int i = pSeq->sz; i >=pos; i--)
+	for (int i = pSeq->sz; i >=pos; i--)
 	{
 		pSeq->data[i + 1] = pSeq->data[i];
 	}
@@ -215,4 +216,19 @@ int BinarySearch(pSeqlist pSeq, datatype x)
 
 }
 
-
+int find(pSeqlist pSeq, datatype x)
+{
+	int pos = 0;
+	int i = 0;
+	
+	while (i<=pSeq->sz&&x != pSeq->data[i])
+	{
+		i++;
+	}
+	if (x == pSeq->data[i])
+	{
+		pos = i + 1;
+		return pos;
+	}
+	return -1;
+}
