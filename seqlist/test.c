@@ -77,6 +77,18 @@ void Test()
 		case PRINTFSEQLIST:
 			PrintSeqlist(&seq);
 			break;
+		case FIND:
+			fflush(stdin);
+			printf("请输入要查找的元素\n");
+			scanf("%d", &x);
+			search=find(&seq, x);
+			if (search == -1)
+			{
+				printf("无法找到\n");
+			}
+			else
+				printf("%d所在的位置是：%d\n", x, search);
+			break;
 		default:
 			break;
 		}

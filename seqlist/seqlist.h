@@ -31,8 +31,8 @@ static enum seq
 	REMOVEALL,
 	SORT,
 	BINARYSEARCH,
-	PRINTFSEQLIST
-
+	PRINTFSEQLIST,
+	FIND
 };
 
 void PrintSeqlist(pSeqlist pSeq);
@@ -46,7 +46,7 @@ void Remove(pSeqlist pSeq,datatype x);
 void RemoveAll(pSeqlist pSeq,datatype x);
 void Sort(pSeqlist pSeq);
 int BinarySearch(pSeqlist pSeq,datatype x);
-
+int find(pSeqlist pSeq, datatype x);
 void meau();
 
 void Exit_seq();
