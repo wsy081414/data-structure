@@ -83,7 +83,7 @@ void PopBack(pLinkList pList)
 	cur = pList->pHead;
 	if (pList->pHead == NULL)
 	{
-		printf("此链表为空链表");
+		printf("此链表为空链表\n");
 		return;
 	}
 	else if (NULL==pList->pHead->next)
@@ -122,7 +122,7 @@ void PopFront(pLinkList pList)
 	assert(pList);
 	if (pList->pHead == NULL)
 	{
-		printf("此链表为空链表");
+		printf("此链表为空链表\n");
 		return;
 	}
 	else
@@ -171,6 +171,12 @@ void Insert(pLinkList pList, pLinkNode pos, datatype x)
 	judgement(newnode);
 	newnode->data = x;
 	newnode->next = NULL;
+	if (pos == NULL)
+	{
+
+		printf("没有这样一个元素，无法插入\n");
+		return;
+	}
 	while (cur != NULL)
 	{
 		if (cur == pos)
@@ -200,7 +206,7 @@ void Remove(pLinkList pList, datatype x)
 	assert(pList);
 	if (pList->pHead == NULL)
 	{
-		printf("此链表为空链表");
+		printf("此链表为空链表\n");
 		return;
 	}
 	cur = pList->pHead;
@@ -210,15 +216,25 @@ void Remove(pLinkList pList, datatype x)
 		
 		if (cur->data == x)
 		{
-			del = cur;
-			cur = cur->next;
-			front->next = cur;
-			free(del);
-			del = NULL;	
-			break;
+			if (cur == pList->pHead)	//考虑第一个节点的情况
+			{
+				del = cur;
+				pList->pHead = cur->next;
+				free(del);
+			}
+			else                        //删除非第一个节点
+			{
+				del = cur;
+				front->next = cur->next;
+				free(del);
+			}
+			return;
 		}
-		front = cur;
-		cur = cur->next;
+		else
+		{
+			front = cur;
+			cur = cur->next;
+		}
 	}
 	printf("没有值为%d的节点\n", x);
 }
@@ -230,7 +246,7 @@ void RemoveAll(pLinkList pList, datatype x)
 	assert(pList);
 	if (pList->pHead == NULL)
 	{
-		printf("此链表为空链表");
+		printf("此链表为空链表\n");
 		return;
 	}
 	cur = pList->pHead;
@@ -240,16 +256,29 @@ void RemoveAll(pLinkList pList, datatype x)
 
 		if (cur->data == x)
 		{
-			del = cur;
-			cur = cur->next;
-			front->next = cur;
-			free(del);
-			del = NULL;
-			continue;
+			if (cur == pList->pHead)	//考虑第一个节点的情况
+			{
+				del = cur;
+				front = cur->next;			//记得要移动front
+				pList->pHead = cur->next;
+				free(del);
+			}
+			else                        //删除非第一个节点
+			{
+				del = cur;
+				front->next = cur->next;
+				free(del);
+			}
+			cur = front;			//让cur移动到当前的front进行操作
+
 		}
-		front = cur;
-		cur = cur->next;
+		else
+		{
+			front = cur;
+			cur = cur->next;
+		}
 	}
+	//printf("没有值为%d的节点\n", x);
 }
 void Erase(pLinkList pList, pLinkNode pos)
 {
@@ -265,46 +294,62 @@ void Erase(pLinkList pList, pLinkNode pos)
 	}
 	while (cur != NULL)
 	{
-	
+		
 		if (pos == cur)
 		{
-			cur = cur->next;
-			erase = pos;
-			free(erase);
-			erase->next = NULL;
-			front->next = cur;
+			if (pos == pList->pHead)
+			{
+				erase = pos;
+				pList->pHead = cur->next;
+				free(erase);
+				erase->next = NULL;
+			}
+			else
+			{
+				erase = pos;
+				front->next = cur->next;
+				free(erase);
+				erase->next = NULL;
+				
+			}
 			return;
 		}
-		front = cur;
-		cur = cur->next;
+		else
+		{
+			front = cur;
+			cur = cur->next;
+
+		}
 	}
+	
 
 }
 void BubbleSort(pLinkList pList)
 {
+
+	pLinkNode cur = NULL;
+	pLinkNode tail = NULL;
 	assert(pList);
-	pLinkNode p = NULL;
-	pLinkNode q = NULL;
-	int flag = 0;
-
-	for (p=pList->pHead; p!=NULL ; p=p->next)
+	cur = pList->pHead;
+	if ((pList->pHead == NULL)||(pList->pHead->next==NULL))
 	{
-		flag = 1;
-		for (q = p->next; q != NULL;q=q->next)
-		{	
-			if (p->data > q->data)
-			{
-				datatype tmp = p->data;
-				p->data = q->data;
-				q->data = tmp;
-				flag = 0;
-			}
-		}
-		if (flag == 1)
-		{
-			break;
-		}
+		return;
 	}
-
+	while (cur != tail)		//当尾指针不等于头指针时进行冒泡
+	{
+		while (cur->next != tail)	//控制cur指针最后到的位置是倒数第二个节点
+		{
+			
+			if (cur->data > cur->next->data)
+			{
+				datatype tmp = cur->data;
+				cur->data = cur->next->data;
+				cur->next->data = tmp;
+			}
+			cur = cur->next;
+		}
+		tail = cur;
+		cur = pList->pHead;
+	}
 }
 
