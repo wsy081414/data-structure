@@ -6,15 +6,19 @@
 
 void meau()
 {
-	printf("$$$$$$$$$$$$$$    SEQLIST    $$$$$$$$$$$$$$$$\n");
-	printf("$$$$$$$$$$$$$$$$$$$$$$￥$$$$$$$$$$$$$$$$$$$$$\n");
-	printf("$$$  1.init              2.push_back      $$$\n");
-	printf("$$$  3.pop_back          4.push_front     $$$\n");
-	printf("$$$  5.pop_front         6.insert         $$$\n");
-	printf("$$$  7.remove            8.removeall      $$$\n");
-	printf("$$$  9.bubblesort        10.earse         $$$\n");
-	printf("$$$  11.printlist         0.EXIT          $$$\n");
-	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+	printf("$$$$$$$$$$$$$$$$$$    SEQLIST    $$$$$$$$$$$$$$$$\n");
+	printf("$$$$$$$$$$$$$$$$$$$$$$￥$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+	printf("$$$  1.init              2.push_back          $$$\n");
+	printf("$$$  3.pop_back          4.push_front         $$$\n");
+	printf("$$$  5.pop_front         6.insert             $$$\n");
+	printf("$$$  7.remove            8.removeall          $$$\n");
+	printf("$$$  9.bubblesort        10.earse             $$$\n");
+	printf("$$$  11.printlist        12.EraseNotTail      $$$\n");
+	printf("$$$  13.reverse          14.insertfrontnode   $$$\n");
+	printf("$$$  15.FindMidNode       0.EXIT              $$$\n");
+	printf("$$$  16.DelKnode       0.EXIT              $$$\n");
+
+	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 }
 
 void InitLinkList(pLinkList pList)
@@ -324,6 +328,8 @@ void Erase(pLinkList pList, pLinkNode pos)
 	
 
 }
+
+//链表的冒泡排序
 void BubbleSort(pLinkList pList)
 {
 
@@ -353,3 +359,116 @@ void BubbleSort(pLinkList pList)
 	}
 }
 
+//删除无头非尾节点
+void EraseNotTail(pLinkNode pos)
+{
+	pLinkNode del = NULL;
+	assert(pos->next != NULL);		//断言，排除尾节点的情况
+
+	pos->data = pos->next->data;	//让当前节点后面节点的数据赋给当前节点。
+	del = pos->next;				//删除记录当前节点后的节点
+	pos->next = pos->next->next;	//当前节点的nex指向删除节点的下一个节点。
+	free(del);
+	del = NULL;
+}
+
+//反转链表
+void Reverse(pLinkList plist)
+{
+	pLinkNode tmp = NULL;		//记录中间节点
+	pLinkNode cur = NULL;		//记录链表的第一个节点
+	pLinkNode newnode = NULL;	//记录翻转后的第一个节点
+	assert(plist);
+	cur = plist->pHead;
+	while (cur != NULL)
+	{
+		tmp = cur;					//	
+		cur = cur->next;
+		tmp->next = newnode;
+		newnode = tmp;
+	}
+	plist->pHead = newnode;
+}
+
+
+//在当前节点前插入一个数据x
+
+void InsertFrontNode(pLinkNode pos, datatype x)
+{
+
+	pLinkNode newnode = NULL;
+	assert(pos);
+	newnode = (pLinkNode)malloc(sizeof(LinkNode));
+	if (NULL == newnode)
+	{
+		printf("out of memory");
+		exit(EXIT_FAILURE);
+	}
+	newnode->data = pos->data;
+	pos->data = x;
+	newnode->next = pos->next;
+	pos->next = newnode;
+
+}
+
+//查找链表的中间节点。
+pLinkNode FindMidNode(pLinkList pList)
+{
+	pLinkNode fast = NULL;
+	pLinkNode slow = NULL;
+	assert(pList);
+	slow = fast = pList->pHead;
+	while (fast != NULL)
+	{
+		if (fast->next != NULL)
+		{
+			fast = fast->next->next;
+		}
+		else
+		{
+			break;;
+		}
+		slow = slow->next;
+	}
+	return slow;
+}
+
+//删除单链表的倒数第K个节点（K>1&&K<总长度）
+void DelKNode(pLinkList pList, int k)
+{
+	pLinkNode front = NULL;
+	pLinkNode back = NULL;
+	pLinkNode del = NULL;
+	
+	assert(pList);
+	if (pList->pHead == NULL)
+	{
+		printf("链表为空！！\n");
+		return;
+	}
+	if (k == 1)
+	{
+		printf("K应当大于1\n");
+		return;
+	}
+	front = back = pList->pHead;
+	while (front != NULL)
+	{
+		k--;
+		if (k < 0)
+		{
+			back = back->next;
+		}
+		front = front->next;
+	}
+	if (k <= 0)
+	{
+		back->data = back->next->data;
+		del = back->next;
+		back->next = back->next->next;
+		free(del);
+	}
+	
+
+	
+}

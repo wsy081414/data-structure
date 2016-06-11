@@ -35,7 +35,12 @@ static enum A
 	REMOVEALL,
 	BUBBLESORT,
 	ERASE,
-	PRINTLIST
+	PRINTLIST,
+	ERASENOTTAIL,
+	REVERSE,
+	INSERTFRONTNODE,
+	FINDMIDNODE,
+	DELKNODE
 };
 
 void InitLinkList(pLinkList pList);
@@ -53,5 +58,10 @@ void Erase(pLinkList pList,pLinkNode pos);
 void BubbleSort(pLinkList pList);
 void meau();
 
+void EraseNotTail(pLinkNode pos);
+void InsertFrontNode(pLinkNode pos, datatype x);
+void Reverse(pLinkList plist);
+pLinkNode FindMidNode(pLinkList pList);
 
+void DelKNode(pLinkList pList, int k);
 #endif //!__LINKLIST_H__
