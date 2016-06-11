@@ -6,7 +6,9 @@ void Test()
 {
 	LinkList list;
 	int input = 1;
+	pLinkNode pos = 0;
 	datatype x = 0;
+	int k = 0;
 	InitLinkList(&list);
 	while (input)
 	{
@@ -41,7 +43,7 @@ void Test()
 			printf("请输入你所插入位置的节点元素值");
 			scanf("%d", &x);
 			fflush(stdin);
-			pLinkNode pos = Find(&list, x);
+			pos = Find(&list, x);
 			printf("请输入你所插入节点元素值");
 			scanf("%d", &x);
 			fflush(stdin);
@@ -75,6 +77,41 @@ void Test()
 		case EXIT:
 			DestroyList(&list);
 			break;
+		case ERASENOTTAIL:
+			printf("删除一个无头非尾节点\n");
+			printf("请输入你所删除的节点元素值");
+			scanf("%d", &x);
+			fflush(stdin);
+			pos = Find(&list,x);
+			EraseNotTail(pos);
+			break;
+		case REVERSE:
+			printf("进行反转链表\n");
+			Reverse(&list);
+			break;
+		case INSERTFRONTNODE:
+			printf("在当前节点前插入一个数据x\n");
+			printf("请输入当前节点元素值");
+			scanf("%d", &x);
+			fflush(stdin);
+			pos = Find(&list, x);
+			printf("请输入插入节点的数据\n");
+			scanf("%d", &x);
+			fflush(stdin);
+			InsertFrontNode(pos, x);
+			break;
+		case FINDMIDNODE:
+			printf("查找链表的中间节点\n");
+			pLinkNode ret = NULL;
+			ret = FindMidNode(&list);
+			printf("链表的中间节点为：%d\n", ret->data);
+			break;
+		case DELKNODE:
+			printf("删除链表倒数第K个节点：\n");
+			scanf("%d", &k);
+			fflush(stdin);
+			DelKNode(&list,k);
+
 		default:
 			input = 1;
 			break;
