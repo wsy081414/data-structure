@@ -64,4 +64,7 @@ void Reverse(pLinkList plist);
 pLinkNode FindMidNode(pLinkList pList);
 
 void DelKNode(pLinkList pList, int k);
+
+
+
 #endif //!__LINKLIST_H__

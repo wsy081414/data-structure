@@ -16,8 +16,7 @@ void meau()
 	printf("$$$  11.printlist        12.EraseNotTail      $$$\n");
 	printf("$$$  13.reverse          14.insertfrontnode   $$$\n");
 	printf("$$$  15.FindMidNode       0.EXIT              $$$\n");
-	printf("$$$  16.DelKnode       0.EXIT              $$$\n");
-
+	printf("$$$  16.DelKnode       0.EXIT                 $$$\n");
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 }
 
@@ -426,7 +425,7 @@ pLinkNode FindMidNode(pLinkList pList)
 		}
 		else
 		{
-			break;;
+			break;
 		}
 		slow = slow->next;
 	}
@@ -471,4 +470,175 @@ void DelKNode(pLinkList pList, int k)
 	
 
 	
+}
+
+
+//判断链表是否带环
+pLinkNode CheckCycle(pLinkList pList)
+{
+	pLinkNode fast = NULL;
+	pLinkNode slow = NULL;
+	assert(pList);
+	fast = slow = pList->pHead;
+	while (fast != NULL)
+	{
+		if (fast->next != NULL)
+		{
+			fast = fast->next->next;
+		}
+		else
+		{
+			break;
+		}
+		slow = slow->next;
+		if (slow == fast)
+			return slow;
+	}
+	return NULL;
+}
+
+//得到链表环的长度
+int GetCycleLength(pLinkNode meet)
+{
+	pLinkNode fast = NULL;
+	pLinkNode slow = NULL;
+	int length = 0;
+	if (meet == NULL)
+	{
+		printf("此链表不带环\n");
+	}
+	else
+	{
+		fast = slow = meet;
+		fast = fast->next->next;
+		slow = slow->next;
+		length++;
+		if (slow == fast)
+		{
+			return length;
+		}
+	}
+	return length;
+
+}
+
+//获取带环的环入口
+pLinkNode GetCycleEntryNode(pLinkList pList)
+{
+	pLinkNode fast = NULL;
+	pLinkNode slow = NULL;
+	assert(pList);
+	fast = slow = pList->pHead;
+	while (fast != NULL)
+	{
+		if (fast->next != NULL)
+		{
+			fast = fast->next->next;
+		}
+		else
+		{
+			printf("不为带环链表！\n");
+			return NULL;
+		}
+		slow = slow->next;
+		if (slow == fast)
+		{
+			break;
+		}
+	}
+	fast = pList->pHead;
+	while (fast != slow)
+	{
+		fast = fast->next;
+		slow = slow->next;
+	}
+	return fast;
+}
+
+//判断两个链表是否相交
+int CheckCross(pLinkList pList1, pLinkList pList2)
+{
+	pLinkNode ptr1 = NULL;
+	pLinkNode ptr2 = NULL;
+	pLinkNode tail = NULL;
+	assert(pList1);
+	assert(pList2);
+	ptr1 = pList1->pHead;
+	ptr2 = pList2->pHead;
+	while (ptr1 != NULL)
+	{
+		ptr1 = ptr1->next;
+	}
+	tail = ptr1;
+	ptr1->next = ptr2;
+	ptr1 = pList1->pHead;
+	while (ptr1 != ptr2&&ptr2 != NULL&&ptr1 != NULL)
+	{
+		if (ptr1->next != NULL)
+		{
+			ptr1 = ptr1->next->next;
+		}
+		else
+		{
+			tail->next = NULL;
+			return 0;		//不相交
+		}
+		ptr2 = ptr2->next;
+
+	}
+	if (ptr1 == ptr2)
+	{
+		tail->next = NULL;
+
+		return 1;		//相交
+	}
+	tail->next = NULL;
+
+	return 0;
+}
+
+pLinkNode GetCrossNode(pLinkList pList1, pLinkList pList2)
+{
+
+	pLinkNode ptr1 = NULL;
+	pLinkNode ptr2 = NULL;
+	pLinkNode tail = NULL;
+	assert(pList1);
+	assert(pList2);
+	ptr1 = pList1->pHead;
+	ptr2 = pList2->pHead;
+	while (ptr1 != NULL)
+	{
+		ptr1 = ptr1->next;
+	}
+	tail = ptr1;
+	ptr1->next = ptr2;
+	ptr1 = pList1->pHead;
+	while (ptr1 != ptr2&&ptr2 != NULL&&ptr1 != NULL)
+	{
+		if (ptr1->next != NULL)
+		{
+			ptr1 = ptr1->next->next;
+		}
+		else
+		{
+			break;		//不相交
+		}
+		ptr2 = ptr2->next;
+
+	}
+	if (ptr1 == ptr2)
+	{
+		ptr1 = pList1->pHead;		//相交
+		while (ptr1!=ptr2)
+		{
+			ptr1 = ptr1->next;
+			ptr2 = ptr2->next;
+			
+		}
+		tail->next = NULL;
+		return ptr1;
+	}
+	tail->next = NULL;
+	return NULL;
 }
