@@ -36,6 +36,8 @@ void Test()
 			printf("最后得到的结果是:\n"); //根据后缀表达式计算结果
 			EvaluateExpression(PostfixExpression, &result);
 			printf("%d\n", result);
+			
+
 			break;
 		default:
 			printf("选择无效\n");

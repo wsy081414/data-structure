@@ -2,13 +2,13 @@
 
 #include"cal.h"
 
-char h[7] = { '+', '-', '*', '/', '(', ')' };
+char h[6] = { '+', '-', '*', '/', '(', ')' };
 
 //优先级判断
 char Precede(char a, char b)
 {
 	int i, c, d;
-	char bijiao[7][7] =
+	char bijiao[6][6] =
 	{
 		{ '>', '>', '<', '<', '<', '>' },
 		{ '>', '>', '<', '<', '<', '>' },
@@ -19,7 +19,7 @@ char Precede(char a, char b)
 
 	};
 
-	for (i = 0; i <= 6; i++)
+	for (i = 0; i <6; i++)
 	{
 		if (a == h[i])
 			c = i;
@@ -99,6 +99,10 @@ int TransmitExpression(char *NifixExpression, char *PostfixExpression)
 			i++;
 			if (NifixExpression[i]<'0' || NifixExpression[i]>'9') //判断是否为操作符，如果是，让后缀表达式中存放一个''
 				PostfixExpression[j++] = ' ';
+		}
+		if (NifixExpression[i] == '\0')
+		{
+			break;
 		}
 		if (stack_empty(&s) == 1)
 		{
@@ -231,3 +235,6 @@ void Menu()
 	printf("*^-^*******( ●—● )********^-^*\n");
 	printf("请选择(^-^):");
 }
+
+
+[100000]
