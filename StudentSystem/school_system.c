@@ -16,25 +16,36 @@ void printf_menu()
 
 
 
+
 void Quit()
 {
-
-	exit(EXIT_FAILURE);
+	
+	exit(0);
+}
+void BTreeSetNull(BITREE tree)
+{
+	 if (tree == NULL)
+	 {	
+		 return;
+	 }
+	BTreeSetNull(tree->child);
+	BTreeSetNull(tree->next);
+	free(tree);
 }
 
-//void InitTree(BITREE root)
-//{
-//	root->n = NULL;
-//	printf("初始化成功\n");
-//}
 BITREE CreateTRee()
 {
-	char infor[MAX_SIZE] = { 0 };
+	char infor[MAX_INF] = { 0 };
+	char name[MAX_INF] = { 0 };
 	BITREE root;
-	printf("请输入节点的信息：");
-	scanf("%s", infor);
+	printf("请输入节点的名字：");
+	scanf("%s", name);
 	fflush(stdin);
-	if (strcmp(infor, "#")==0)
+	printf("请输入节点的内容：");
+	scanf("%s", infor);
+	printf("下一个节点：\n");
+	fflush(stdin);
+	if (strcmp(name, "#")==0)
 	{
 		root = NULL;
 	}
@@ -47,7 +58,8 @@ BITREE CreateTRee()
 			exit(EXIT_FAILURE);
 		}
 		(root)->prev = NULL;
-		strcpy((root)->data, infor);
+		strcpy((root)->data, name);
+		strcpy((root)->infor, infor);
 		root->next=CreateTRee();
 		if ((root)->next)
 			(root)->next->prev = (root);
@@ -82,14 +94,15 @@ BITREE find(BITREE root, char *FindAllchile)
 
 void FindAllCHild(BITREE root)
 {
+	
+	BITREE cur = NULL;
+	char FindAllchile[MAX_SIZE] = { 0 };
 	if (root == NULL)
 	{
 		printf("TREE IS EMPTY !!\n");
 		return;
 	}
-	BITREE cur = NULL;
-	char FindAllchile[MAX_SIZE] = { 0 };
-	printf("请输入你所要查找的节点信息：");
+	printf("请输入你所要查找的节点名字：");
 	scanf("%s", FindAllchile);
 	fflush(stdin);
 	cur = find(root, FindAllchile);
@@ -99,34 +112,17 @@ void FindAllCHild(BITREE root)
 		pretraversal_binary_tree(cur->child);
 		return;
 	}
-	printf("无匹配信息！");
+	printf("无匹配信息！\n");
 	
 }
 
-void View_superior(BITREE node, char *FindAllchile)
-{
-	
-	if (node != NULL)
-	{
-		
-		if (node->next != NULL)
-		{ 
-			if (strcmp(node->data, FindAllchile) == 0)
-				return;
-			if (node->prev!=NULL)
-				printf("%s\n", node->data);
-			pretraversal_binary_tree(node->next);
-		}
-		if (node->child != NULL)
-			pretraversal_binary_tree(node->child);
-	}
-}
+
 
 void FindParent(BITREE root)
 {
 	if (root == NULL)
 	{
-		printf("tree is empty !!");
+		printf("tree is empty !!\n");
 		return;
 	}
 	BITREE cur = NULL;
@@ -145,10 +141,11 @@ void FindParent(BITREE root)
 			p = p->prev;
 		}
 		
-		printf("%s\n", p->prev->data);
+		printf("节点信息为：%s\n", p->prev->data);
+		printf("节点内容为：%s\n", p->prev->infor);
 	}
 	else
-		printf("无匹配信息！");
+		printf("无匹配信息！\n");
 }
 
 void FindPerson(BITREE root)
@@ -166,30 +163,35 @@ void FindPerson(BITREE root)
 	scanf("%s", findteacher);
 	fflush(stdin);
 	cur = find(root, findteacher);
+
 	p = cur;
 	if (cur != NULL)
 	{
-		printf("上级单位：\n");
+		printf("当前你所查找的节点内容为：%s\n", cur->infor);
+		
+		
 		while (p->prev->next == p)
 		{
 			p = p->prev;
 		}
 
 		printf("%s在%s任职\n", findteacher, p->prev->data);
+		printf("上级单位%s信息为：%s\n", p->prev->data,p->prev->infor);
 	}
 	else
-		printf("无匹配信息！");
+		printf("无匹配信息！\n");
 }
 
 void FindCollege(BITREE root)
 {
+
+	BITREE cur = NULL;
+	char findcollege[MAX_SIZE] = { 0 };
 	if (root == NULL)
 	{
 		printf("tree is empty !!");
 		return;
 	}
-	BITREE cur = NULL;
-	char findcollege[MAX_SIZE] = { 0 };
 	printf("请输入一个院系或者专业：");
 	scanf("%s", findcollege);
 	fflush(stdin);
@@ -197,7 +199,8 @@ void FindCollege(BITREE root)
 	if (cur != NULL)
 	{
 		printf("%s存在%s这一级单位!\n", root->data, findcollege);
-		
+		printf("学院下属信息：\n");
+		pretraversal_binary_tree(cur->child);
 	}
 	else
 	{
@@ -211,7 +214,8 @@ void pretraversal_binary_tree(BITREE node)//先序进行遍历
 {
 	if (node != NULL)
 	{
-		printf("%s\n", (node)->data);
+		printf("单位名称为：%s\n", node->data);
+		printf("单位信息为：%s\n", node->infor);
 	
 		pretraversal_binary_tree(node->next);
 		
@@ -227,7 +231,8 @@ void intraversal_binary_tree(BITREE node)//中序进行遍历
 	
 		intraversal_binary_tree(node->next);
 
-		printf("%s\n", node->data);
+		printf("单位名称为：%s\n", node->data);
+		printf("单位信息为：%s\n", node->infor);
 		
 		intraversal_binary_tree(node->child);
 	}
@@ -241,7 +246,9 @@ void postraversal_binary_tree(BITREE node)//后序进行遍历
 		postraversal_binary_tree(node->next);
 	
 		postraversal_binary_tree(node->child);
-
-		printf("%s\n", node->data);
+		
+		printf("单位名称为：%s\n", node->data);
+		
+		printf("单位信息为：%s\n", node->infor);
 	}
 }

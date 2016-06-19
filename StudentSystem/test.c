@@ -15,9 +15,12 @@ void Test()
 		switch (input)
 		{
 		case CREATE:
+			printf("创建树（孩子兄弟前序创建）\n");
 			root=CreateTRee();
 			break;
 		case INIT:
+			BTreeSetNull(root);
+			root = NULL;
 			break;
 		case FINDALLCHILD:
 			FindAllCHild(root);
@@ -43,6 +46,8 @@ void Test()
 			FindCollege(root);
 			break;
 		case QUIT:
+			BTreeSetNull(root);
+			Quit();
 			break;
 		default :
 			input = 1;

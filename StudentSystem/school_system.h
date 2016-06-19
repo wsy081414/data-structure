@@ -9,15 +9,16 @@
 #include<assert.h>
 #include<string.h>
 
-#define MAX_INF 20
-#define MAX_SIZE 20
-#define PERSON_SIZE 15
+#define MAX_INF 40
+#define MAX_SIZE 40
+#define PERSON_SIZE 35
 
 typedef  char Datatype;
 
 typedef struct system
 {
 	Datatype data[MAX_INF];
+	Datatype infor[MAX_INF];
 	struct system *next, *prev, *child;//child指针指向的是子部门，next指向的是同级部门，prev指向的是父节点
 } BITNODE,*BITREE;
 
@@ -34,8 +35,6 @@ static enum a
 	SHOW
 	
 };
-
-void InitTree(BITREE root);
 
 void printf_menu();
 
@@ -54,6 +53,10 @@ void FindParent(BITREE root);
 
 void FindPerson(BITREE root);
 
+void Quit();
+
 void FindCollege(BITREE root);
+
+void BTreeSetNull(BITREE tree);
 
 #endif // !__SCHOOL_SYSTEM_C__
