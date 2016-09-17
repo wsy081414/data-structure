@@ -1,10 +1,16 @@
 #pragma once
 
+
+#ifndef __QUEUE__H_
+#define __QUEUE__H_
+
 #include<iostream>
 #include<cstdlib>
 #include<cassert>
 #include<stack>
 using namespace std;
+
+//利用两个栈实现一个队列，让数据在两个栈内移动就可以了。
 
 template<typename T>
 class Queue
@@ -84,3 +90,5 @@ T& Queue<T>::back()
 	return s1.top();
 }
 
+
+#endif
