@@ -48,14 +48,30 @@ public:
 		_head=_Copyconstruction(g._head);
 	
 	}
+	//传统写法
 	Generalized& operator =(const Generalized &d)
 	{
 		if (this != &d)
 		{
-			_head = _assignment(d._head);
+			GeneralizedNode* tmp = _Copyconstruction(d._head);
+			_Destroy(_head);
+			_head = tmp;
 		}
 			return *this;
 	}
+	
+
+	//现代写法
+	/*Generalized& operator =(const Generalized &d)
+	{
+		if (this != &d)
+		{
+			Generalized tmp(d);
+			swap(_head, tmp._head);
+		}
+		return *this;
+	}*/
+
 	~Generalized()
 	{
 		if (_head)
@@ -97,35 +113,35 @@ public:
 	}
 
 protected:
-	GeneralizedNode* _assignment(GeneralizedNode *head)
-	{
-		assert(head);
-		GeneralizedNode *newlist = new GeneralizedNode(HEAD);
-		GeneralizedNode *cur = head->_next;
-		GeneralizedNode *newcur = newlist;
-		while (cur)
-		{
-			if (cur->_type == SUB)
-			{
-				GeneralizedNode *subnode = new GeneralizedNode(SUB);
-				subnode->_sublink = _assignment(cur->_sublink);
-				newcur->_next = subnode;
-				newcur = subnode;
-				cur = cur->_next;
+	// GeneralizedNode* _assignment(GeneralizedNode *head)
+	// {
+		// assert(head);
+		// GeneralizedNode *newlist = new GeneralizedNode(HEAD);
+		// GeneralizedNode *cur = head->_next;
+		// GeneralizedNode *newcur = newlist;
+		// while (cur)
+		// {
+			// if (cur->_type == SUB)
+			// {
+				// GeneralizedNode *subnode = new GeneralizedNode(SUB);
+				// subnode->_sublink = _assignment(cur->_sublink);
+				// newcur->_next = subnode;
+				// newcur = subnode;
+				// cur = cur->_next;
 			
-			}
-			else
-			{
-				GeneralizedNode *newnode = new GeneralizedNode(cur->_type, cur->_value);
-				newcur->_next = newnode;
-				newcur = newnode;
-				cur = cur->_next;
-			}
+			// }
+			// else
+			// {
+				// GeneralizedNode *newnode = new GeneralizedNode(cur->_type, cur->_value);
+				// newcur->_next = newnode;
+				// newcur = newnode;
+				// cur = cur->_next;
+			// }
 
-		}
+		// }
 	
-		return newlist;
-	}
+		// return newlist;
+	// }
 
 
 	GeneralizedNode* _Copyconstruction(GeneralizedNode *head)
@@ -176,20 +192,22 @@ protected:
 	{
 		assert(head);
 		GeneralizedNode *cur = head;
-		size_t dep = 1;
+		size_t maxdep = 1;
 		while (cur)
 		{
 			if (cur->_type == SUB)
 			{
+				size_t dep = 1;
 				dep+=_Depth(cur->_sublink);
-				cur = cur->_next;
+				if (dep > maxdep)
+				{
+					maxdep = dep;
+				}
 			}
-			else
-			{
+			
 				cur = cur->_next;
-			}
 		}
-		return dep;
+		return maxdep;
 	}
 	size_t _size(GeneralizedNode *head)
 	{
@@ -294,19 +312,22 @@ protected:
 };
 void test1()
 {
-	Generalized g1("(a,b,c,(d,((),()),a))");
+	Generalized g1("(a,b,(a,b),c,(d,((),()),a))");
 	
 	Generalized g3("(((), ()))");
-	Generalized g2;
-	cout<<g2.Depth() << endl;
+	Generalized g2(g3);
+	Generalized g4 = g1;
+	cout<<g1.Depth() << endl;
+	g4.print();
+	/*cout<<g2.Depth() << endl;
 	cout << g2.size() << endl;
 	g2.print();
-	g1 = g1;
+	g1 = g1;*/
 //	Generalized g4(g3);
 	//g3.print();
-	g1.print();
+	/*g1.print();
 	cout << g1.Depth() << endl;
-	cout << g3.Depth() << endl;
+	cout << g3.Depth() << endl;*/
 	//g4.print();
 	cout << g1.size() << endl;
 	//cout << g3.size() << endl;
