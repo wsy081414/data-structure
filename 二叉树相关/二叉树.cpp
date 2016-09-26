@@ -4,6 +4,8 @@
 #include<cstdlib>
 #include<cassert>
 #include<queue>
+#include<stack>
+
 using namespace std;
 
 template<typename  T>
@@ -67,7 +69,7 @@ public:
 
 	}*/
 
-	void Preorderprint()
+	void PreorderPrint()
 	{
 		_PreOrder(_root);
 		cout << endl;
@@ -85,6 +87,109 @@ public:
 		cout << endl;
 
 	}
+
+	//前序非递归遍历
+	void PreorderPrintNorR()
+	{
+		if (_root == NULL)
+		{
+			return;
+		}
+		else
+		{
+			stack<Node *> s;
+			Node *cur = _root;
+			while ((cur != NULL)||(!s.empty()))
+			{
+				if (cur != NULL)
+				{
+					cout << cur->_value<<" ";
+					s.push(cur);
+					cur = cur->_left;
+				}
+				else
+				{
+					cur = s.top();
+					s.pop();
+					cur = cur->_right;
+				}
+			}
+		}
+		cout << endl;
+	}
+	//中序非递归遍历
+	void InfixPrintNorR()
+	{
+		if (_root == NULL)
+		{
+			return;
+		}
+		else
+		{
+			stack<Node *> s;
+			Node *cur = _root;
+			while ((cur != NULL) || (!s.empty()))
+			{
+				if (cur)
+				{
+					s.push(cur);
+					cout << cur->_value << " ";
+					cur = cur->_left;
+				}
+				else
+				{
+					s.pop();
+					cur = cur->_right;
+				}
+
+			}
+		}
+		cout << endl;
+	}
+	void PostPrintNorR()
+	{
+		if (_root == NULL)
+		{
+			return;
+		}
+		else
+		{
+			stack<Node *> s;
+			stack<int > ints;//1代表向左，2代表向右
+			int v=0;
+			Node *cur = _root;
+			while ((!ints.empty())|| (!s.empty()))
+			{
+				if (cur != NULL&& v == 0)
+				{
+					s.push(cur);
+					ints.push(1);
+					cur = cur->_left;
+				}
+				else
+				{
+					cur = s.top();
+					v = ints.top();
+					s.pop();
+					ints.pop();
+					if (v == 1)
+					{
+						s.push(cur);
+						ints.push(2);
+						cur = cur->_right;
+						v = 0;
+					}
+					else
+					{
+						cout << cur->_value << " ";
+					}
+				}
+
+			}
+		}
+	
+	}
+
 	void LevelPrint()
 	{
 		_LevelPrint(_root);
@@ -99,9 +204,9 @@ public:
 	{
 		return _Depth(_root);
 	}
-	size_t GetKLevel()
+	size_t GetKLevel(const size_t & k)
 	{
-		return _GetKLevel();
+		return _GetKLevel(k);
 	}
 	size_t Leafsize()
 	{
@@ -169,6 +274,11 @@ protected:
 			}
 
 		}
+	}
+
+	size_t _GetKLevel(size_t k)
+	{
+		
 	}
 
 	Node* _Copy(Node *root)
@@ -265,7 +375,10 @@ void test1()
 	BinaryTree<int > d;
 	
 
-	cout<<d.Depth()<<endl;
+	//cout<<d.Depth()<<endl;
+	b.PreorderPrintNorR();
+	b.InfixPrint();
+	b.PostPrintNorR();
 	//bt.LevelPrint();
 	//cout<<bt.Leafsize() << endl;
 	//cout << bt.Depth() << endl;
