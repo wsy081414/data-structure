@@ -87,11 +87,16 @@ public:
 		cout << endl;
 
 	}
+	//查找
+	Node* Find(Node* _root, const T& x)
+	{
+		return _Find(_root, x);
 
+	}
 	//前序非递归遍历
 	void PreorderPrintNorR()
 	{
-		if (_root == NULL)
+		if (_root == NULL)	//判断是否为空树
 		{
 			return;
 		}
@@ -99,20 +104,18 @@ public:
 		{
 			stack<Node *> s;
 			Node *cur = _root;
-			while ((cur != NULL)||(!s.empty()))
+			while ((cur != NULL)||(!s.empty()))	
 			{
-				if (cur != NULL)
+				while (cur)
 				{
 					cout << cur->_value<<" ";
 					s.push(cur);
 					cur = cur->_left;
 				}
-				else
-				{
-					cur = s.top();
-					s.pop();
-					cur = cur->_right;
-				}
+		
+				Node *top = s.top();
+				s.pop();
+				cur = top->_right;
 			}
 		}
 		cout << endl;
@@ -130,64 +133,52 @@ public:
 			Node *cur = _root;
 			while ((cur != NULL) || (!s.empty()))
 			{
-				if (cur)
+				while(cur)
 				{
 					s.push(cur);
-					cout << cur->_value << " ";
 					cur = cur->_left;
-				}
-				else
-				{
-					s.pop();
-					cur = cur->_right;
-				}
+				}		
+				Node *top = s.top();
+				s.pop();
+				cout << top->_value << " ";
 
 			}
 		}
 		cout << endl;
 	}
+	//后序非递归遍历
 	void PostPrintNorR()
 	{
-		if (_root == NULL)
+		if (_root==NULL)
 		{
 			return;
 		}
 		else
 		{
-			stack<Node *> s;
-			stack<int > ints;//1代表向左，2代表向右
-			int v=0;
+			stack<Node * > s;
 			Node *cur = _root;
-			while ((!ints.empty())|| (!s.empty()))
+			Node *prev = NULL;	//记录上一个访问到的节点。
+			while (cur||!s.empty())
 			{
-				if (cur != NULL&& v == 0)
+				while (cur)		//while循环到最左边的节点
 				{
 					s.push(cur);
-					ints.push(1);
 					cur = cur->_left;
+				}
+				Node *top = s.top();	//取得最左边的节点
+				if (top->_right == NULL || prev == top->_right)//如果这个top的右边是访问过的或者是NULL，就不进行访问；
+				{
+					cout << top->_value << " ";
+					s.pop();
+					prev = top;
 				}
 				else
 				{
-					cur = s.top();
-					v = ints.top();
-					s.pop();
-					ints.pop();
-					if (v == 1)
-					{
-						s.push(cur);
-						ints.push(2);
-						cur = cur->_right;
-						v = 0;
-					}
-					else
-					{
-						cout << cur->_value << " ";
-					}
+					cur = top->_right;	//访问右边
 				}
-
 			}
 		}
-	
+		cout << endl;
 	}
 
 	void LevelPrint()
@@ -215,28 +206,13 @@ public:
 protected:
 	size_t _Depth(Node *root)
 	{
-		size_t maxdepth = 0;
-		if (root != NULL)
+		if (root == NULL)
 		{
-			size_t depth = 1;
-			if (root->_left != NULL)
-			{
-				depth += _Depth(root->_left) ;
-			}
-			if (depth > maxdepth)
-			{
-				maxdepth = depth;
-			}
-			if (root->_right != NULL)
-			{
-				depth = _Depth(root->_right) + 1;
-			}
-			if (depth > maxdepth)
-			{
-				maxdepth = depth;
-			}
+			return 0;
 		}
-		return maxdepth;
+		size_t ldepth = _Depth(root->_left);
+		size_t rdepth = _Depth(root->_right);
+		return (((ldepth > rdepth) ? ldepth : rdepth) + 1);
 	}
 	size_t _Leafsize(Node * root)
 	{
@@ -254,7 +230,25 @@ protected:
 		}
 		return size;
 	}
-
+	Node* _Find(Node *root,const T& x)
+	{
+		if (root == NULL)
+		{
+			return NULL;
+		}
+		
+		if (root->_value == x)
+		{
+			return root;
+		}
+		Node *cur = _Find(root->_left,x);
+		if (cur == NULL)
+		{
+			Node *cur = _Find(root->_right, x);
+		}
+		return cur;
+	
+	}
 	void _LevelPrint(Node* root)
 	{
 		queue<Node *> q;
@@ -376,9 +370,11 @@ void test1()
 	
 
 	//cout<<d.Depth()<<endl;
+	//cout << b.Depth() << endl;
 	b.PreorderPrintNorR();
-	b.InfixPrint();
+	//b.InfixPrint();
 	b.PostPrintNorR();
+	//b.PostPrintNorR();
 	//bt.LevelPrint();
 	//cout<<bt.Leafsize() << endl;
 	//cout << bt.Depth() << endl;
