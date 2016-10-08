@@ -75,6 +75,11 @@ public:
 		
 		}
 	}
+	//前序线索化的前序遍历
+	void PreOrderTh()
+	{
+		_PreOrdert(_root);
+	}
 	//后序线索化。
 	void PostOrderThread()
 	{
@@ -102,6 +107,28 @@ public:
 		_InOrder(_root);
 	}
 protected:
+	//前序线索化的前序遍历
+	void _PreOrdert(Node *_root)
+	{
+		Node *cur = _root;
+		while (cur)
+		{
+			while (cur&&cur->_leftTag==LINK)
+			{
+				cout << cur->_data << " ";
+				cur = cur->_left;
+			}
+			cout << cur->_data << " ";
+		
+			cur = cur->_right;
+			
+
+
+		}
+		cout << endl;
+	
+	}
+
 	//中序线索化以后的中序遍历
 	void _InOrder(Node *root)
 	{
@@ -197,9 +224,9 @@ protected:
 			prev->_right = cur;
 		}
 		prev = cur;
-		if (cur->_leftTag ==LINK)
+		if (cur->_leftTag == LINK)
 			_PreOrderThread(cur->_left, prev);
-		if(cur->_rightTag==LINK)
+		if(cur->_rightTag == LINK)
 			_PreOrderThread(cur->_right, prev);
 
 	}
