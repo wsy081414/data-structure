@@ -1,90 +1,140 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+//堆
 
+#pragma once
+#include<iostream>
+#include<cstdlib>
+#include<vector>
 
-#include"binary.h"
-#include"thread.h"
-#include"heap.h"
-
-void test1()
+template<typename T>
+class BinaryHeap
 {
-	int a[10] = { 1, 2, 3, '#', '#', 4, '#', '#', 5, 6 };
-	int *ar = NULL;
-	int arr[15] = { 1, 2, '#', 3, '#', '#', 4, 5, '#', 6, '#', 7, '#', '#', 8 };
-	BinaryTree<int > b(a, 10, (int )'#');
-	BinaryTree<int > bt(arr, 15, (int )'#');
-	BinaryTree<int > c(ar, 0, (int)'#');
-	BinaryTree<int > d;
+
+	
+public:
+	//默认构造函数
+	//BinaryHeap() = default;
+	//构造函数
+	BinaryHeap(int capacit = 10)
+		:_capacity(capacit)
+		, _size(0)
+		, _pheap(new T [_capacity])
+	{
+		;
+	}
+	//析构函数
+	~BinaryHeap()
+	{
+		delete[] _pheap;
+		
+	}
+	//堆中插入一个节点
+	void Insert(const T& val)
+	{
+		if (_size == _capacity)
+			return;
+		_pheap[_size] = val;
+		SiftUp(_size);
+		_size++;
+
+	}
+	//堆中删除值为data的节点
+	void Remove(const T& data)
+	{
+		if (_size == 0)
+			return;
+		int index = -1;
+		for (size_t i = 0; i < _size; i++)
+		{
+			if (_pheap[i] == data)
+			{
+				index = i;
+				break;
+			}
+		}
+		if (index == -1)
+		{
+			return;
+		}
+		_pheap[index] = _pheap[_size - 1];
+		SiftDown(0, _size - 1);
+	}
+	//打印整个堆
+	void PrintHeap()
+	{
+		for (size_t i = 0; i < _size; i++)
+		{
+			cout << _pheap[i] << " ";
+		}
+		cout << endl;
+	}
+	//取得堆上的最值
+	T Top()
+	{
+		if (_size！ = 0)
+			return _pheap[0];
+	}
+	//创建堆
+	void CreateMinHeap(T* a, size_t length)
+	{
+		if (_size == _capacity)
+		{
+			return ;
+		}
+		else
+		{
+			for (size_t i = 0; i < length; i++)
+			{
+				Insert(a[i]);
+			}
+		}
+	}
 	
 
-	//cout<<d.Depth()<<endl;
-	//cout << b.Depth() << endl;
-	cout << b.GetKLevel(3) << endl;
-	cout << b.GetKLevel(1) << endl;
-	cout << d.GetKLevel(7) << endl;
+protected:
+	//上滑调整法
+	void SiftUp(size_t size)
+	{
+		T tmp = _pheap[size];
+		while (size>0)
+		{
+			size_t parent = (size - 1) / 2;
+			if (tmp < _pheap[parent])
+				break;
+			else
+			{
+				_pheap[size] = _pheap[parent];
+				size = parent;
+			}
+		}
+		_pheap[size] = tmp;
+	}
+	//下滑调整法
+	void SiftDown(size_t cur, size_t end)
+	{
+		int child = 2 * cur + 1;
+		T tmp = _pheap[cur];
+		while (child <= end)
+		{
+			if (child < end&&_pheap[child] < _pheap[child + 1])
+				child++;
+			if (tmp>_pheap[child])
+				break;
+			else
+			{
+				_pheap[cur] = _pheap[child];
+				cur = child;
+				child = child * 2 + 1;
+			}
+		}
+		_pheap[cur] = tmp;
 
-	//b.InfixPrint();
-	b.PostPrintNorR();
-	//b.PostPrintNorR();
-	//bt.LevelPrint();
-	//cout<<bt.Leafsize() << endl;
-	//cout << bt.Depth() << endl;
-	//cout << b.Leafsize() << endl;
-	//
-	//cout <<c.Leafsize()<< endl;
+	}
 
-	//cout << b.Size() << endl;
-	//b.Preorderprint();
-	//b.InfixPrint();
-	//b.PostPrint();
-	//cout << endl;
-	//cout << d.Size() << endl;
-	//d.Preorderprint();
-	//d.InfixPrint();
-	//d.PostPrint();
-	//cout<<c.size() << endl;
-	//c.InfixPrint();
-	//c.PostPrint();
-	//c.Preorderprint();
+protected:
+	size_t _size;
+	size_t _capacity;
+	T* _pheap;
+};
 
-	/*cout << d.size() << endl;
-	d.InfixPrint();
-	d.PostPrint();
-	d.Preorderprint();*/
-	/*cout<<bt.size() << endl;
-	bt.Preorderprint();
-	bt.InfixPrint();
-	bt.PostPrint();*/
-	cout << endl;
 
-	/*b.Preorderprint();
-	b.InfixPrint();
-	b.PostPrint();
-	cout << b.size() << endl;*/
 
-}
-void test2()
-{
-	int a[10] = { 1, 2, 3, '#', '#', 4, '#', '#', 5, 6 };
-	int *ar = NULL;
-	int arr[15] = { 1, 2, '#', 3, '#', '#', 4, 5, '#', 6, '#', 7, '#', '#', 8 };
-	BinaryTreeThread<int > b(a, 10, (int)'#');
-	
-	b.PreOrderThread();
-	b.PreOrderTh();
-}
-void testheap()
-{
-	int a[] = { 10, 11, 13, 12, 16, 18, 15, 17, 14, 19 };
-	BinaryHeap<int > t(15);
-	t.CreateMinHeap(a, 10);
-	t.PrintHeap();
-	t.Insert(15);
-	t.PrintHeap();
-}
-
-int main()
-{
-	testheap();
-	system("pause");
-	return 0;
-}
