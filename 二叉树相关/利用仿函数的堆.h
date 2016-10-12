@@ -7,7 +7,7 @@
 #include<cassert>
 #include<vector>
 
-
+using namespace std;
 
 template<typename T>
 class Less
@@ -30,11 +30,10 @@ public:
 };
 
 //´ó¶Ñ
-template<typename T,typename Compare =Greater<T>>
+template<typename T, typename Compare = Greater<T>>
 class Heap
 {
 public:
-
 	Heap(T *a, size_t size)
 	{
 		_a.reserve(size);
@@ -42,11 +41,11 @@ public:
 		{
 			_a.push_back(a[i]);
 		}
-		for (int j = (_a.size()-1)/2; j >=0; j--)
+		for (int j = (_a.size() - 2) / 2; j >= 0; j--)
 		{
 			_AdjustDown(j);
 		}
-	
+
 	}
 	void Pop()
 	{
@@ -66,6 +65,14 @@ public:
 		return _a[0];
 
 	}
+	size_t Size()
+	{
+		return _a.size();
+	}
+	bool empty()
+	{
+		return _a.empty();
+	}
 protected:
 	void _AdjustDown(int root)
 	{
@@ -76,12 +83,12 @@ protected:
 		{
 			Compare com;
 
-			if (child+1<_a.size()
-				&&com(_a[child+1],_a[child]))
+			if (child + 1<_a.size()
+				&& com(_a[child + 1], _a[child]))
 			{
 				++child;
 			}
-			if (child<_a.size()&&com(_a[child],_a[parent]))
+			if (child<_a.size() && com(_a[child], _a[parent]))
 			{
 				std::swap(_a[child], _a[parent]);
 				parent = child;
@@ -100,7 +107,7 @@ protected:
 		{
 			Compare com;
 			size_t parent = (child - 1) / 2;
-			if (com(_a[child],_a[parent]))
+			if (com(_a[child], _a[parent]))
 			{
 				std::swap(_a[child], _a[parent]);
 				child = parent;
@@ -110,11 +117,12 @@ protected:
 				break;
 			}
 		}
-	
+
 	}
 
 protected:
 	std::vector<T > _a;
 };
+
 
 

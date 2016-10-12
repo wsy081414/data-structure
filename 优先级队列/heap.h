@@ -41,7 +41,7 @@ public:
 		{
 			_a.push_back(a[i]);
 		}
-		for (int j = (_a.size() - 1) / 2; j >= 0; j--)
+		for (int j = (_a.size() - 2) / 2; j >= 0; j--)
 		{
 			_AdjustDown(j);
 		}
