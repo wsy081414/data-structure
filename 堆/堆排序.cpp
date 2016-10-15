@@ -5,7 +5,11 @@
 using namespace std;
 
 
-//������Ҫ�����ʱ������ҪС�ѣ�������Ҫ�����ʱ������Ҫ���
+//当你需要降序的时候，你需要小堆，当你需要升序的时候，你需要大堆
+//时间复杂度：N*logN
+//建堆加上调整的：
+//N*logN+N*logN=2N*logN
+
 template<typename T>
 void AdjustDown(T* arr, size_t root,size_t count)
 {
