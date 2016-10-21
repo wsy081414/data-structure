@@ -5,30 +5,32 @@
 #include<cassert>
 using namespace std;
 
-template<typename K>
+template<typename K,typename V>
 struct SearchBinaryTreeNode
 {
-	typedef SearchBinaryTreeNode<K> Node;
+	typedef SearchBinaryTreeNode<K,V> Node;
+
 	SearchBinaryTreeNode(const K& key)
-		: left(NULL)
-		, right(NULL)
-		, value(key)
+		: _left(NULL)
+		, _right(NULL)
+		, _key(key)
 
 	{
-		
 	}
 
-	K value;
-	Node* left;
-	Node* right;
+	
+	V _value;
+	Node* _left;
+	Node* _right;
+	K _key;
 
 };
 
-template<typename K>
+template<typename K,typename V>
 class SearchBinaryTree
 {
 protected:
-	typedef SearchBinaryTreeNode<K> Node;
+	typedef SearchBinaryTreeNode<K,V>  Node;
 
 public:
 	SearchBinaryTree(const K* arr, size_t size)
@@ -60,15 +62,15 @@ public:
 		Node *parent = _root;
 		while (cur)
 		{
-			if (cur->value < key)
+			if (cur->_key < key)
 			{
 				parent = cur;
-				cur = cur->right;
+				cur = cur->_right;
 			}
-			else if (cur->value>key)
+			else if (curcur->_key>key)
 			{
 				parent = cur;
-				cur = cur->left;
+				cur = cur->_left;
 			}
 			else
 			{
@@ -76,14 +78,14 @@ public:
 			}
 		}
 		Node *tmp = new Node(key);
-		if (key > parent->value)
+		if (key > parent->_key)
 		{
 
-			parent->right = tmp;
+			parent->_right = tmp;
 		}
 		else
 		{
-			parent->left = tmp;
+			parent->_left = tmp;
 		}
 		return true;
 	}
@@ -96,18 +98,18 @@ public:
 		Node *cur = _root;
 		Node *parent = NULL;
 		Node *del = NULL;
-		while (cur&&cur->value!=key)
+		while (cur&&cur->_key!=key)
 		{
-			if (cur->value < key)
+			if (cur->_key < key)
 			{
 				
 				parent = cur;
-				cur = cur->right;
+				cur = cur->_right;
 			}
-			else if (cur->value>key)
+			else if (cur->_key>key)
 			{
 				parent = cur;
-				cur = cur->left;
+				cur = cur->_left;
 			}
 			else
 			{
@@ -124,55 +126,55 @@ public:
 			del = cur;
 			if (parent == NULL)
 			{
-				_root = cur->right;
+				_root = cur->_right;
 			}
 			else
 			{
 
-				if (parent->left == cur)
+				if (parent->_left == cur)
 				{
-					parent->left = cur->right;
+					parent->_left = cur->_right;
 				}
 				else
 				{
-					parent->right = cur->right;
+					parent->_right = cur->_right;
 				}
 			}
 		}
-		else if (cur->right==NULL)
+		else if (cur->_right==NULL)
 		{
 			del = cur;
 			if (parent == NULL)
 			{
-				cur = cur->left;
+				cur = cur->_left;
 			}
 			else
 			{
-				if (parent->left == cur)
+				if (parent->_left == cur)
 				{
-					parent->left = cur->left;
+					parent->_left = cur->_left;
 				}
 				else
 				{
-					parent->right = cur->right;
+					parent->_right = cur->_right;
 				}
 			}
 		
 		}
 		else
 		{
-			Node *swapnode = cur->right;
-			while (swapnode->left)
+			Node *swapnode = cur->_right;
+			while (swapnode->_left)
 			{
 				parent = swapnode;
-				swapnode = swapnode->left;
+				swapnode = swapnode->_left;
 			}
 			del = swapnode;
-			swap(swapnode->value, cur->value);
-			if (parent->left = swapnode)
-				parent->left = swapnode->right;
+			swap(swapnode->_key, cur->_key);
+			if (parent->_left = swapnode)
+				parent->_left = swapnode->_right;
 			else
-				parent->right = swapnode->right;
+				parent->_right = swapnode->_right;
 		}
 		delete del;
 		del = NULL;
@@ -194,13 +196,13 @@ public:
 		Node *cur = _root;
 		while (cur)
 		{
-			if (key > cur->value)
+			if (key > cur->_key)
 			{
-				cur = cur->left;
+				cur = cur->_left;
 			}
-			else if (key < cur->value)
+			else if (key < cur->_key)
 			{
-				cur = cur->right;
+				cur = cur->_right;
 			}
 			else
 			{
@@ -215,35 +217,35 @@ public:
 	}
 	const K& Top()
 	{
-		return _root->value;
+		return _root->_key;
 	}
 	const K& Minvalue()
 	{
 		assert(_root);
 		Node* cur = _root;
-		while (cur->left)
+		while (cur->_left)
 		{
-			cur = cur->left;
+			cur = cur->_left;
 		}
-		return cur->value;
+		return cur->_value;
 	}
 	const K& Maxvalue()
 	{
 		assert(_root);
 		Node *cur = _root;
-		while (cur->right)
+		while (cur->_right)
 		{
-			cur = cur->right;
+			cur = cur->_right;
 		}
-		return cur->value;
+		return cur->_value;
 	}
 protected:
 	Node* _DestorySBT(Node *root)
 	{
 		if (root != NULL)
 		{
-			root->left = _DestorySBT(root->left);
-			root->right = _DestorySBT(root->right);
+			root->_left = _DestorySBT(root->_left);
+			root->_right = _DestorySBT(root->_right);
 			delete root;
 			root = NULL;
 		}
@@ -253,9 +255,9 @@ protected:
 	{
 		if (root == NULL)
 			return;
-		_Inorderprint(root->left);
-		cout << root->value << " ";
-		_Inorderprint(root->right);
+		_Inorderprint(root->_left);
+		cout << root->_key << " ";
+		_Inorderprint(root->_right);
 	}
 	bool _InsertP(Node *&root, const K& key)
 	{
@@ -264,13 +266,13 @@ protected:
 			root = new Node(key);
 			return true;
 		}
-		if (root->value > key)
+		if (root->_key > key)
 		{
-			_InsertP(root->left, key);
+			_InsertP(root->_left, key);
 		}
-		else if (root->value < key)
+		else if (root->_key < key)
 		{
-			_InsertP(root->right, key);
+			_InsertP(root->_right, key);
 		}
 		else
 		{
@@ -284,42 +286,42 @@ protected:
 		{
 			return false;
 		}
-		if (root->value < key)
+		if (root->_key < key)
 		{
-			_RemoveP(root->right,key);
+			_RemoveP(root->_right,key);
 		}
-		else if (root->value>key)
+		else if (root->_key > key)
 		{
-			_RemoveP(root->left,key);
+			_RemoveP(root->_left,key);
 		}
 		else
 		{
 			Node* del = root;
 
 
-			if (root->left == NULL)
+			if (root->_left == NULL)
 			{
-				root = root->right;
+				root = root->_right;
 			}
-			else if (root->right == NULL)
+			else if (root->_right == NULL)
 			{
-				root = root->left;
+				root = root->_left;
 			}
 			else
 			{
 			
 				Node* parent = root;
-				Node *swapnode = root->right;
-				while (swapnode->left)
+				Node *swapnode = root->_right;
+				while (swapnode->_left)
 				{
 					parent = swapnode;
-					swapnode = swapnode->left;
+					swapnode = swapnode->_left;
 				}
-				root->value = swapnode->value;
-				if (parent->right == swapnode)
-					parent->right = swapnode->right;
+				root->_key = swapnode->_key;
+				if (parent->_right == swapnode)
+					parent->_right = swapnode->_right;
 				else
-					parent->left = swapnode->right;
+					parent->_left = swapnode->_right;
 				del = swapnode;
 			}
 			delete del;
@@ -333,13 +335,13 @@ protected:
 		{
 			return false;
 		}
-		if (key < root->value)
+		if (key < root->_key)
 		{
-			return _FindP(root->left, key);
+			return _FindP(root->_left, key);
 		}
-		else if (key>root->value)
+		else if (key>root->_key)
 		{
-			return _FindP(root->right, key);
+			return _FindP(root->_right, key);
 		}
 		else
 		{
