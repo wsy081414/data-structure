@@ -36,7 +36,7 @@ public:
 		assert(arr);
 		for (size_t i = 0; i < size; i++)
 		{
-			Insert(arr[i]);
+			InsertP(arr[i]);
 		}
 	
 	}
@@ -44,6 +44,10 @@ public:
 	{
 		_root=_DestorySBT(_root);
 
+	}
+	bool InsertP(const K& key)
+	{
+		return _InsertP(_root, key);
 	}
 	bool Insert(const K& key)
 	{
@@ -82,6 +86,10 @@ public:
 			parent->left = tmp;
 		}
 		return true;
+	}
+	bool RemoveP(const K& key)
+	{
+		return _RemoveP(_root, key);
 	}
 	bool Remove(const K& key)
 	{
@@ -201,6 +209,10 @@ public:
 		}
 		return false;
 	}
+	bool FindP(const K &key)
+	{
+		return _FindP(_root, key);
+	}
 	const K& Top()
 	{
 		return _root->value;
@@ -245,7 +257,96 @@ protected:
 		cout << root->value << " ";
 		_Inorderprint(root->right);
 	}
+	bool _InsertP(Node *&root, const K& key)
+	{
+		if (root == NULL)
+		{
+			root = new Node(key);
+			return true;
+		}
+		if (root->value > key)
+		{
+			_InsertP(root->left, key);
+		}
+		else if (root->value < key)
+		{
+			_InsertP(root->right, key);
+		}
+		else
+		{
+			return false;
+		}
+		return true;
+	}
+	bool _RemoveP(Node *&root, const K& key)
+	{
+		if (root == NULL)
+		{
+			return false;
+		}
+		if (root->value < key)
+		{
+			_RemoveP(root->right,key);
+		}
+		else if (root->value>key)
+		{
+			_RemoveP(root->left,key);
+		}
+		else
+		{
+			Node* del = root;
 
+
+			if (root->left == NULL)
+			{
+				root = root->right;
+			}
+			else if (root->right == NULL)
+			{
+				root = root->left;
+			}
+			else
+			{
+			
+				Node* parent = root;
+				Node *swapnode = root->right;
+				while (swapnode->left)
+				{
+					parent = swapnode;
+					swapnode = swapnode->left;
+				}
+				root->value = swapnode->value;
+				if (parent->right == swapnode)
+					parent->right = swapnode->right;
+				else
+					parent->left = swapnode->right;
+				del = swapnode;
+			}
+			delete del;
+			return true;
+		}
+		return false;
+	}
+	bool _FindP(Node * root,const K& key)
+	{
+		if (root == NULL)
+		{
+			return false;
+		}
+		if (key < root->value)
+		{
+			return _FindP(root->left, key);
+		}
+		else if (key>root->value)
+		{
+			return _FindP(root->right, key);
+		}
+		else
+		{
+			return true;
+		}
+		return false;
+	}
 protected:
 	Node * _root;
 };
