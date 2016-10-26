@@ -9,7 +9,11 @@ template<typename K,typename V>
 struct SearchBinaryTreeNode
 {
 	typedef SearchBinaryTreeNode<K,V> Node;
-
+	SearchBinaryTreeNode()
+		:_left(NULL)
+		, _right(NULL)
+		, _key(0)
+	{}
 	SearchBinaryTreeNode(const K& key)
 		: _left(NULL)
 		, _right(NULL)
@@ -116,10 +120,12 @@ public:
 				break;
 			}
 		}
+		//没找到进行处理
 		if (cur == NULL)
 		{
 			return false;	
 		}
+		//对左为空进行处理
 		if (cur->left == NULL)
 		{
 
@@ -141,6 +147,7 @@ public:
 				}
 			}
 		}
+		//对右为空进行处理
 		else if (cur->_right==NULL)
 		{
 			del = cur;
@@ -161,6 +168,7 @@ public:
 			}
 		
 		}
+		//两个都不为空进行处理
 		else
 		{
 			Node *swapnode = cur->_right;
@@ -170,8 +178,10 @@ public:
 				swapnode = swapnode->_left;
 			}
 			del = swapnode;
-			swap(swapnode->_key, cur->_key);
-			if (parent->_left = swapnode)
+			cur->_key = swapnode->_key;
+			cur->_value = swapnode->_value;
+
+			if (parent->_left == swapnode)
 				parent->_left = swapnode->_right;
 			else
 				parent->_right = swapnode->_right;
@@ -189,7 +199,7 @@ public:
 	{
 		return _root == NULL;
 	}
-	bool Find(const K &key)
+	V& Find(const K &key)
 	{
 		if (_root == NULL)
 			return false;
@@ -206,7 +216,7 @@ public:
 			}
 			else
 			{
-				return true;
+				return cur->_value;
 			}
 		}
 		return false;
@@ -256,7 +266,7 @@ protected:
 		if (root == NULL)
 			return;
 		_Inorderprint(root->_left);
-		cout << root->_key << " ";
+		cout << root->_key <<" ";
 		_Inorderprint(root->_right);
 	}
 	bool _InsertP(Node *&root, const K& key)
@@ -318,6 +328,7 @@ protected:
 					swapnode = swapnode->_left;
 				}
 				root->_key = swapnode->_key;
+				root->_value = swapnode->_value;
 				if (parent->_right == swapnode)
 					parent->_right = swapnode->_right;
 				else
