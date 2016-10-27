@@ -199,7 +199,7 @@ public:
 	{
 		return _root == NULL;
 	}
-	V& Find(const K &key)
+	bool Find(const K &key)
 	{
 		if (_root == NULL)
 			return false;
@@ -216,7 +216,7 @@ public:
 			}
 			else
 			{
-				return cur->_value;
+				return true;
 			}
 		}
 		return false;
