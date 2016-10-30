@@ -210,16 +210,46 @@ public:
 			}
 			else
 			{
+				
 				break;
 			}
 		}
-
-		if (cur->_color == RED)
+		Node *parent = cur->_parent;
+		//此时就是没有找到需要删除的节点
+		if (cur == NULL)
 		{
-			del = cur;
+			return false;
+		}
+		if (cur->_left != NULL&&cur->_right != NULL)
+		{
+			Node *swapnode = cur->_right;
+			while (swapnode->_left)
+			{
+				parent = swapnode;
+				swapnode = swapnode->_left;
+			}
+
+			del = swapnode;
+			cur->_key = swapnode->_key;
+			cur->_value = swapnode->_value;
+
+			if (parent->_left == swapnode)
+			{
+				parent->_left = swapnode->_right;
+			}
+			else
+			{
+				parent->_right = swapnode->_left;
+			}
 
 		}
 
+
+
+
+
+		delete del;
+		return true;
 	}
 	//判断是否是红黑树
 	bool IsRBTree()
@@ -270,6 +300,7 @@ public:
 		}
 		return false;
 	}
+	//中序递归遍历
 	void InorderPrint()
 	{
 		_InorderPrint(_root);
