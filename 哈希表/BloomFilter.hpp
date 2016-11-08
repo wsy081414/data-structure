@@ -120,15 +120,15 @@ template<typename K = string,
 	typename Funcpos1 = _Funcpos1<K>,
 	typename Funcpos2 = _Funcpos2<K>,
 	typename Funcpos3 = _Funcpos3<K>,
-	typename Funcpos4 = _Funcpos3<K>,
-	typename Funcpos5 = _Funcpos3<K> >
+	typename Funcpos4 = _Funcpos4<K>,
+	typename Funcpos5 = _Funcpos5<K> >
 class BloomFilter
 {
 public:
 	//构造函数
 	BloomFilter(const size_t range)
-		: _size(range)
-		, _bl(range)
+		: _bl(5*range)
+		, _size(range)
 	{	
 	}
 	//布隆过滤器进行设置，根据原理，对通过字符串函数所计算的K个位进行设置状态。
