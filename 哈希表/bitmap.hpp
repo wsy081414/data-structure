@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-
+#pragma once
 #include<iostream>
 #include<vector>
 #include<cstdlib>
@@ -42,4 +42,7 @@ public:
 protected:
 	std::vector<size_t> _bitmap;
 };
+
+
+
 
