@@ -38,9 +38,16 @@ public:
 	}
 
 	~BTree()
-	{}
+	{
+		_root=_Destroy(_root);
+	}
 
-	
+	void InOrderPrint()
+	{
+		_InOrderPrint(_root);
+		cout << endl;
+	}
+
 	bool Insert(const K &key)
 	{
 		//首先来考虑空树的情况
@@ -80,7 +87,7 @@ public:
 			//如果==M，那么就应该进行分裂
 			//首先找到中间的节点
 			size_t mid = cur->_size / 2;
-			//创建一个节点，用来保存中间节点右边所有的节点。
+			//创建一个节点，用来保存中间节点右边所有的节点和子节点。
 			Node * tmp = new Node;
 
 			size_t j = 0;
@@ -95,16 +102,22 @@ public:
 			}
 
 			//移动子串
-			for (j = 0; j < tmp->_size; j++)
+			for (j = 0; j < tmp->_size + 1; j++)
 			{
 				tmp->_sub[j] = cur->_sub[mid + 1 + j];
+				if (tmp->_sub[j])
+				{
+					tmp->_sub[j]->_parent = tmp;
+				}
 				cur->_sub[mid + 1 + j] = NULL;
 			}
 
 
-			//进行其他的移动
 
-			//分裂就是
+			//进行其他的移动
+			//分裂的条件就是要么分裂根，要么就是分裂子节点，要么就是所在节点的节点数小于M。
+
+			//考虑根分裂，分裂的时候创建节点，然后把中间节点上拉，记得要更改最后的parent
 			if (cur->_parent == NULL)
 			{
 				_root = new Node();
@@ -120,12 +133,15 @@ public:
 				tmp->_parent = _root;
 				return true;
 			}
+			//分裂如果不是根节点，那么就把mid节点插入到上一层节点中，然后看上一层节点是否要分裂。注意修改cur和sub
+
 			else
 			{
 				newKey = cur->_keys[mid];
 				cur->_keys[mid] = K();
 				cur->_size--;
 				cur = cur->_parent;
+
 				sub = tmp;
 				sub->_parent = cur;
 
@@ -135,6 +151,38 @@ public:
 	}
 	
 protected:
+	//中序遍历
+	void _InOrderPrint(Node* root)
+	{
+		if (root == NULL)
+		{
+			return;
+		}
+		_InOrderPrint(root->_sub[0]);
+		for (size_t i = 0; i < root->_size; i++)
+		{
+			cout << root->_keys[i] << " ";
+			_InOrderPrint(root->_sub[i + 1]);
+		}
+
+		
+	}
+	//删除所有节点
+	Node* _Destroy(Node *root)
+	{
+		if (_root == NULL)
+		{
+			return NULL;
+		}
+		if (root != NULL)
+		{
+			for (size_t i = 0; i < M + 1; i++)
+				root->_sub[i] = _Destroy(root->_sub[i]);
+			delete root;
+			root = NULL;
+		}
+		return root;
+	}
 	//向当前节点里面进行插入节点。
 	void InsetKey(Node* cur, const K &key, Node* sub)
 	{
