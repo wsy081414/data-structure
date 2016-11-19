@@ -255,7 +255,7 @@ protected:
 		Node *cur = _Find(root->_left, x);
 		if (cur == NULL)
 		{
-			Node *cur = _Find(root->_right, x);
+			cur = _Find(root->_right, x);
 		}
 		return cur;
 
