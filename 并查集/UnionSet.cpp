@@ -27,6 +27,10 @@ public:
 		memset(_parent, -1, sizeof(int)*(n + 1));
 
 	}
+	~UnionSet()
+	{
+		delete[] _parent;
+	}
 	//合并并查集
 	void Union(int r1, int r2)
 	{
