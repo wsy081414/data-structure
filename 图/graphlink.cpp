@@ -3,6 +3,7 @@
 #include<iostream>
 #include<cstdlib>
 #include<vector>
+#include"unionset.hpp"
 #include<string>
 using namespace std;
 
@@ -135,7 +136,66 @@ public:
 			}
 		}
 	}
+	//最小生成树
+	bool MinTree(GraphLink<V, W>& mintree)
+	{
+		//第一步先判断是否为无项图，如果为有向图，那么就没有最小生成树的概念。
+		if (_isDirected == true)
+		{
+			return flase;
+		}
+		//然后把所有的邻接表的顶点放入最小生成树当中去。
+		mintree._vertexs = _vertexs;
+		//设置最小生成树的邻接表
+		mintree._tables.resize(_tables.resize());
+		
+		struct Compare
+		{
+			bool operator()(Node* l, Node* r)
+			{
+				return l->_weight < r->_weight;
+			}
 
+		};
+		vector<Node* >minheap;
+		for (int i = 0; i < _tables.size(); i++)
+		{
+			Node* cur = _tables[i];
+			while (cur)
+			{
+				minheap.push_back(cur);
+				cur = cur->_next;
+			}
+		}
+		//生成小堆，方便每次取出最短路径
+		make_heap(minheap.begin(), minheap end, Compare());
+		//使用并查集
+		UnionSet s(_vertexs.size());
+		size_t n = 0;
+		while (n < _vertexs.size() - 1)
+		{
+			//如果堆为空。这个时候说明存在那种单独的点。
+			if (!minheap.empty())
+			{
+				return false;
+			}
+
+			pop_heap(minheap.begin(), minheap.end(), Compare());
+			Node * minedge = minheap.back();
+			minheap.pop_back();
+			size_t root1 = s.CountRoot(minedge->_dst);
+			size_t root2 = s.CountRoot(minedge->_src);
+			if (root1 != root2)
+			{
+				s.Union(minedge->_dst, minedge->_src);
+				mintree.InsertEdge(minedge->_src, minedge->_src, minedge->_w);
+				n++;
+			}
+		}
+		return true;
+
+
+	}
 protected:
 	void _DFS(size_t src, vector<bool>& visited)
 	{
