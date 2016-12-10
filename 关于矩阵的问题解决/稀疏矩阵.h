@@ -54,6 +54,7 @@ SparseMatrix<T>::SparseMatrix(T* a, size_t row, size_t col, const T& invaild)
 	{
 		for (size_t j = 0; j < col; j++)
 		{
+			//行乘上列数
 			if (a[i*_colsize + j] != _invaild)
 			{
 				Triple<T> tmp(a[i*_colsize + j], i, j);
