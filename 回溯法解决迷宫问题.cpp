@@ -61,6 +61,7 @@ bool GetPath(int *maze, int row, int col, Stack<Pos> &path, Pos entry)
 	path.Push(cur);
 	while (!path.Empty())
 	{
+		//еп╤оЁЖ©з
 		if (cur._row != entry._row&&cur._col != entry._col && (cur._row == row - 1 || cur._row == 0 || cur._col == col - 1))
 		{
 			maze[cur._row*N + cur._col] = 2;

@@ -128,6 +128,8 @@ public:
 					pparent->_color = RED;
 					uncle->_color = parent->_color = BLACK;
 					cur = pparent;
+					
+					//向上回溯，看是否满足红黑树
 					parent = cur->_parent;
 					continue;
 				}
