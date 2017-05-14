@@ -72,6 +72,49 @@ public:
 		return false;
 	}
 
+	//遍历邻边
+
+	class Travseadjacent
+	{
+	private:
+		Graph_tables& _g;		//具体那个图
+		int _v;					//顶点
+		int _index;				//index
+	public:
+		Travseadjacent(Graph_tables& g, int v)	//进行初始化
+			:_g(g)
+			, _v(v)
+			, _index(-1)
+		{}
+		~Travseadjacent()
+		{}
+
+		int begin()								//begin迭代器
+		{
+			_index = 0;
+			if (_g._g[_v].size())
+				return _g._g[_v][_index];
+			return -1;
+		}
+
+		int next()				
+		{
+			_index++;
+			if (_index < _g._g[_v].size())		//返回邻接表的下一项
+				return _g._g[_v][_index];
+			return -1;
+		}
+
+		bool end()
+		{
+			if (_index >= _g._g[_v].size())
+				return false;
+			return true;
+		}
+
+
+	};
+
 };
 
 

@@ -63,6 +63,98 @@ public:
 	{
 		return _g[v][w];
 	}
+
+	class Travseadjacent
+	{
+	private:
+		Graph_Matix& _G;
+		int _v;
+		int _index;
+	public:
+		Travseadjacent(Graph_Matix& g, int v)
+			:_G(g)
+			, _v(v)
+			, _index(-1)
+		{
+		}
+		~Travseadjacent(){}
+
+		int begin()
+		{
+			_index = -1;
+			return next();
+		}
+
+		int next()
+		{
+			for (int i = _index+1; i < _G._g[_v].size(); i++)		//返回邻接矩阵存在的下一项
+			{
+				if (_G._g[_v][i] == true)
+					return _G._g[_v][i];
+			}
+			return -1;
+		}
+
+		bool end()
+		{
+			if (_index >= _G._g[_v].size())
+				return false;
+			return true;
+		}
+
+
+	};
+};
+
+template<typename Graph>
+class compent
+{
+private:
+	Graph &G;
+	bool *visited;
+	int *id;
+	int ccount;
+	void dfs(int i)
+	{
+		visited[i] = true;
+		id[i] = ccount;
+
+		typename Graph::Travseadjacent a(G, i);			//使用前面使用的迭代器进行遍历操作
+		for (int i = a.begin(); i < a.end(); i = a.next())
+		{
+			if (!visited[i])							//没有访问过，那么就采用深度优先的方式
+				dfs(i);
+		}
+	}
+public:
+	compent(Graph g)
+		:G(g)
+		, visited( new bool [G.V()])
+		, id(new int [G.V()])
+		, ccount(0)
+	{
+		for (int i = 0; i < G.V(); i++)
+		{
+			visited[i] = false;
+			id[i] = -1;
+		}
+
+		for (int j = 0; j < G.V(); j++)
+		{
+			if (!visited[j])
+			{
+				dfs(i);
+				ccount++;
+			}
+		}
+	}
+
+	~compent()
+	{
+		delete[] visited;
+		delete[] id;
+	}
+
 };
 
 
